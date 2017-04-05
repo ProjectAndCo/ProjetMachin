@@ -16,63 +16,59 @@ public class Parser {
     protected LookAhead1 reader;
 
     public Parser(LookAhead1 r){
-	this.reader = r;
+		this.reader = r;
     }
 
     public void nonterm_DOCUMENT() throws Exception {
-
-	this.nonterm_CORPS();
+		nonterm_CORPS();
     }
 
     public void nonterm_CORPS() throws Exception {
-
-	this.reader.eat(Sym.BEGINDOC);
-	this.nonterm_SUITE_ELEMENTS();
-	this.reader.eat(Sym.ENDDOC);	
+		reader.eat(Sym.BEGINDOC);
+		nonterm_SUITE_ELEMENTS();
+		reader.eat(Sym.ENDDOC);	
     }
 
     public void nonterm_SUITE_ELEMENTS() throws Exception {
-
-	this.nonterm_ELEMENT();
-	this.nonterm_SUITE_ELEMENTS();
+		nonterm_ELEMENT();
+		nonterm_SUITE_ELEMENTS();
     }
 
     public void nonterm_ELEMENT() throws Exception {
 
-	if(this.reader.check(Sym.MOT)){
-	    this.reader.eat(Sym.MOT);
-	} else if(this.reader.check(Sym.LINEBREAK)){
-	    this.reader.eat(Sym.LINEBREAK);
-	} else if(this.reader.check(Sym.BOLD)){
-	    this.reader.eat(Sym.BOLD);
-	    this.reader.eat(Sym.LBRACKET);
-	    this.nonterm_SUITE_ELEMENTS();
-	    this.reader.eat(Sym.RBRACKET);
+	if(reader.check(Sym.MOT)){
+	    reader.eat(Sym.MOT);
+	} else if(reader.check(Sym.LINEBREAK)){
+	    reader.eat(Sym.LINEBREAK);
+	} else if(reader.check(Sym.BOLD)){
+	    reader.eat(Sym.BOLD);
+	    reader.eat(Sym.LBRACKET);
+	    nonterm_SUITE_ELEMENTS();
+	    reader.eat(Sym.RBRACKET);
 	}  else if(this.reader.check(Sym.ITALIC)){
-	    this.reader.eat(Sym.ITALIC);
-	    this.reader.eat(Sym.LBRACKET);
-	    this.nonterm_SUITE_ELEMENTS();
-	    this.reader.eat(Sym.RBRACKET);
+	    reader.eat(Sym.ITALIC);
+	    reader.eat(Sym.LBRACKET);
+	    nonterm_SUITE_ELEMENTS();
+	    reader.eat(Sym.RBRACKET);
 	} else
-	    this.nonterm_ENUMERATION();
+	    nonterm_ENUMERATION();
     }
 
     public void nonterm_ENUMERATION() throws Exception {
-
-	this.reader.eat(Sym.BEGINENUM);
-	this.nonterm_SUITE_ITEMS();
-	this.reader.eat(Sym.ENDENUM);
+		reader.eat(Sym.BEGINENUM);
+		nonterm_SUITE_ITEMS();
+		reader.eat(Sym.ENDENUM);
     }
 
     public void nonterm_SUITE_ITEMS() throws Exception {
-
-	this.nonterm_ITEM();
-	this.nonterm_SUITE_ITEMS();
+		nonterm_ITEM();
+		nonterm_SUITE_ITEMS();
     }
 
     public void nonterm_ITEM() throws Exception {
-
-	this.reader.eat(Sym.ITEM);
-	this.nonterm_SUITE_ELEMENTS();
+		reader.eat(Sym.ITEM);
+		nonterm_SUITE_ELEMENTS();
     }
+    
+
 }
